@@ -47,6 +47,7 @@
             display: flex;
             flex-direction: column-reverse;
             overflow: hidden;
+            text-align: center;
            
 
         }
@@ -74,15 +75,13 @@
 
         .numEven{
             color: #77ff88;
-          background-color: #00800059;
-          font-family: sans-serif;
+          background-color: #00800059; 
         
            
         }
         .numOdd{
             color: #ff8080; 
-            background-color: #db29294f;
-            font-family: sans-serif;
+            background-color: #db29294f; 
         }
     </style>
 </head>
@@ -94,8 +93,7 @@
         <div id="digits2"></div>
         <div id="digit1"></div>
     </div>
-    <script>
-        var cc = document.body;
+    <script> 
         var tk = document.getElementById("ticks");
         var dg2 = document.getElementById("digits2");
         var dg1 = document.getElementById("digit1");
@@ -117,9 +115,7 @@
         ws.onmessage = function (msg) {
             contador++
             var data = JSON.parse(msg.data);
-
-            var isScrolledToBottom = cc.scrollHeight - cc.clientHeight <= cc.scrollTop + 1;
-             
+ 
             //var orgticks = data.tick.quote
             var ticks = ~~Number(data.tick.quote).toFixed(decimals)
             //org obtiene los ultimos 2 digitos del decimal
@@ -174,19 +170,7 @@
             dg2.appendChild(di2)
             dg1.appendChild(di1)
 
-            if (isScrolledToBottom) {
-                cc.scrollTop = cc.scrollHeight - cc.clientHeight;
-            }
-
-
-
-
-
             
-
-
-            // console.info(digit);
-            //console.error(digits);
         };
 
     </script>
