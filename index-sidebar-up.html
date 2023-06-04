@@ -1,0 +1,190 @@
+<head>
+    <title>Tick Digits - V100-One</title>
+    <link rel="icon" type="image/x-icon" href="./favicon.png">
+    <style>
+        /* width */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+            box-shadow: transparent;
+            border-radius: 0px;
+            background: #060f1bee;
+            
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            background: rgba(131, 145, 155, 0.377);
+            border-radius: 10px;
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(131, 145, 155, 0.473);
+        }
+        body{
+            background-color: rgb(11, 5, 22);
+        }
+        #container {
+            width: 100%;
+            height: auto;
+            /*background-color: red;*/
+            display: flex;
+            flex-direction: row;
+            color: rgb(213, 236, 255); 
+            overflow-x: hidden;
+            overflow-y: auto;
+            justify-content: center;
+        }
+
+        #ticks {
+            width: 34px;
+            height: 100%;
+            /*background-color: rgb(28, 224, 182);*/
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+           
+
+        }
+
+        #digits2 {
+            width: 16px;
+            height: 100%;
+            /*background-color: rgb(87, 214, 28);*/
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        #digit1 {
+            width: 16px;
+            height: 100%;
+            /*background-color: rgb(247, 123, 7);*/
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            text-align: center;
+
+        }
+
+        .numEven{
+            color: #77ff88;
+          background-color: #00800059;
+           
+        }
+        .numOdd{
+            color: #ff8080; 
+            background-color: #db29294f;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="container">
+        <div id="ticks"></div>
+        <div id="digits2"></div>
+        <div id="digit1"></div>
+    </div>
+    <script>
+        var cc = document.body;
+        var tk = document.getElementById("ticks");
+        var dg2 = document.getElementById("digits2");
+        var dg1 = document.getElementById("digit1");
+
+        var ws = new WebSocket('wss://ws.binaryws.com/websockets/v3?app_id=1089');
+
+        var symbol = "R_100";
+        var decimals = 2;
+
+        ws.onopen = function (evt) {
+            ws.send(JSON.stringify({ ticks: symbol }));
+        };
+        var contador = 0
+
+        //var greenn = "#0a5417"
+        var greenn = "#00800059"
+        var redd = "#db29294f"
+        //var redd = "#f92020"
+        ws.onmessage = function (msg) {
+            contador++
+            var data = JSON.parse(msg.data);
+
+            var isScrolledToBottom = cc.scrollHeight - cc.clientHeight <= cc.scrollTop + 1;
+             
+            //var orgticks = data.tick.quote
+            var ticks = ~~Number(data.tick.quote).toFixed(decimals)
+            //org obtiene los ultimos 2 digitos del decimal
+            //var digits = Number(data.tick.quote).toFixed(decimals).slice(-2);
+            var digitst = Number(data.tick.quote).toFixed(decimals).slice(-2).charAt(0);
+            var digit = Number(data.tick.quote).toFixed(decimals).slice(-1);
+
+            var tk_div = document.createElement("div");
+            //tk_div.setAttribute("id", "tk" + contador)
+           
+            var tk_text = document.createTextNode(ticks)
+            if(ticks%2==0){
+                tk_div.setAttribute("class", "numEven" )
+                //tk_div.style.backgroundColor = greenn
+                //tk_div.style.color = "green"
+                
+            }else{
+                tk_div.setAttribute("class", "numOdd" )
+                //tk_div.style.backgroundColor = redd
+                //tk_div.style.color = "red"
+            }
+            tk_div.appendChild(tk_text)
+
+            var di2 = document.createElement("div");
+            //di2.setAttribute("id", "di" + contador);
+            var di2_text = document.createTextNode(digitst);
+            if(digitst%2==0){ 
+                di2.setAttribute("class", "numEven" );
+                //di2.style.backgroundColor = greenn
+            }else{ 
+                di2.setAttribute("class", "numOdd" );
+                //di2.style.backgroundColor = redd
+            }
+            di2.appendChild(di2_text);
+
+            var di1 = document.createElement("div");
+            di1.setAttribute("id", "d" + contador);
+            var di1_text = document.createTextNode(digit);
+            if(digit%2==0){ 
+                di1.setAttribute("class", "numEven" )
+                //di1.style.backgroundColor =greenn
+            }else{ 
+                di1.setAttribute("class", "numOdd" )
+                //di1.style.backgroundColor = redd
+            }
+            di1.appendChild(di1_text);
+
+
+
+
+            tk.appendChild(tk_div)
+            dg2.appendChild(di2)
+            dg1.appendChild(di1)
+
+            if (isScrolledToBottom) {
+                cc.scrollTop = cc.scrollHeight - cc.clientHeight;
+            }
+
+
+
+
+
+            
+
+
+            // console.info(digit);
+            //console.error(digits);
+        };
+
+    </script>
+</body>
