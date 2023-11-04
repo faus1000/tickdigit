@@ -1,5 +1,5 @@
 <head>
-    <title>Tick Digits - V100-One</title>
+    <title>Tick Digits - V100-tri</title>
     <link rel="icon" type="image/x-icon" href="./favicon.png">
     <style>
         /* width */
@@ -27,7 +27,8 @@
         }
         body{
             background-color: rgb(11, 5, 22);
-            overflow: hidden;
+            overflow-x: hidden;
+            overflow-y: auto;
             margin: 0px;
             padding: 0px;
             border: 0px;
@@ -45,8 +46,7 @@
         }
 
         #ticks {
-           width: 45px;
-            
+            width: 16px;
             height: 100%;
             /*background-color: rgb(28, 224, 182);*/
             display: flex;
@@ -134,7 +134,8 @@
             var tk_div = document.createElement("div");
             //tk_div.setAttribute("id", "tk" + contador)
            
-            var tk_text = document.createTextNode(ticks+".")
+            //var tk_text = document.createTextNode(ticks+".")
+            var tk_text = document.createTextNode(ticks.toString().slice(-1))
             if(ticks%2==0){
                 tk_div.setAttribute("class", "numEven" )
                 //tk_div.style.backgroundColor = greenn
